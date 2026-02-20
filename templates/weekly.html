@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdgeCare — Weekly Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0a0e1a;
+            --accent: #3b82f6;
+            --accent-d: #2563eb;
+            --accent-l: #dbeafe;
+            --border: #e2e8f0;
+            --bg: #f0f4ff;
+            --card: #ffffff;
+            --text: #0f172a;
+            --sub: #475569;
+            --muted: #94a3b8;
+            --radius: 14px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+            --tr: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── NAV ──────────────────────────────────────────── */
+        .topnav {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background: var(--navy);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            display: flex;
+            align-items: center;
+            padding: 0 32px;
+            height: 62px;
+            gap: 20px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-mark {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-sep {
+            width: 1px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .nav-page {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .nav-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: var(--tr);
+        }
+
+        .nav-back:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .nav-logout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.45);
+            text-decoration: none;
+            transition: var(--tr);
+        }
+
+        .nav-logout:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        /* ── PAGE ─────────────────────────────────────────── */
+        .page-wrap {
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 36px 32px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Hero header */
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .page-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 34px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.8px;
+            line-height: 1.1;
+        }
+
+        .page-title span {
+            color: var(--accent);
+        }
+
+        .page-sub {
+            font-size: 14px;
+            color: var(--muted);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .readonly-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 9px 16px;
+            border-radius: 99px;
+            flex-shrink: 0;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--sub);
+            box-shadow: var(--shadow);
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8)
+            }
+        }
+
+        /* ── STAT CARDS ─────────────────────────────────── */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: var(--shadow);
+            transition: var(--tr);
+            animation: fade-up 0.4s ease both;
+        }
+
+        .stat-card:nth-child(1) {
+            animation-delay: 0s
+        }
+
+        .stat-card:nth-child(2) {
+            animation-delay: 0.06s
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.12s
+        }
+
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.25);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--accent-l);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-num {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .stat-num.text-sm {
+            font-size: 20px;
+            padding-top: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        /* ── CHARTS GRID ─────────────────────────────────── */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 16px;
+        }
+
+        .chart-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            animation: fade-up 0.4s ease both;
+        }
+
+        .chart-card:nth-child(1) {
+            animation-delay: 0.18s
+        }
+
+        .chart-card:nth-child(2) {
+            animation-delay: 0.24s
+        }
+
+        .chart-card-hdr {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 12px;
+        }
+
+        .chart-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.2px;
+        }
+
+        .chart-card-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .chart-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-l);
+            padding: 4px 10px;
+            border-radius: 99px;
+            white-space: nowrap;
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 220px;
+        }
+
+        .chart-wrap-md {
+            position: relative;
+            height: 200px;
+        }
+
+        /* ── THIRD ROW ───────────────────────────────────── */
+        .bottom-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ── EMPTY / LOADING ────────────────────────────── */
+        .state-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .state-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent-l);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .state-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .state-body {
+            font-size: 14px;
+            color: var(--muted);
+            max-width: 320px;
+            line-height: 1.65;
+        }
+
+        .spinner {
+            width: 22px;
+            height: 22px;
+            border: 2.5px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.6;
+            padding: 24px 0 0;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── TOP NAV ──────────────────────────────────────────── -->
+    <nav class="topnav">
+        <a href="/" class="nav-brand">
+            <div class="nav-mark">
+                <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+                    <path d="M16 4 L20 11 L28 12 L22 18 L23 26 L16 22 L9 26 L10 18 L4 12 L12 11 Z" fill="white"
+                        opacity="0.92" />
+                </svg>
+            </div>
+            <span class="nav-name">EdgeCare</span>
+        </a>
+        <div class="nav-sep"></div>
+        <span class="nav-page">Weekly Overview</span>
+        <div class="nav-right">
+            <a href="/" class="nav-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg>
+                Daily Check-in
+            </a>
+            <a href="/logout" class="nav-logout" title="Sign out">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Weekly <span>Overview</span></h1>
+                <p class="page-sub">Your personal 7-day wellness reflection · read-only</p>
+            </div>
+            <div class="readonly-badge">
+                <span class="badge-dot"></span>
+                Read-Only View
+            </div>
+        </div>
+
+        <!-- Dynamic content area -->
+        <div id="mainContent">
+            <div class="state-box">
+                <div class="state-icon">
+                    <div class="spinner"></div>
+                </div>
+                <p class="state-body">Loading your weekly data…</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const ACCENT = '#3b82f6';
+        const ACCENT_FILL = 'rgba(59,130,246,0.12)';
+        const BAR_COLORS = ['#3b82f6', '#0ea5e9', '#6366f1', '#8b5cf6', '#14b8a6', '#06b6d4', '#64748b', '#a78bfa', '#38bdf8', '#7c3aed', '#0284c7', '#4338ca', '#0d9488', '#2563eb', '#7e22ce'];
+
+        async function loadWeeklyData() {
+            const wrap = document.getElementById('mainContent');
+            try {
+                const res = await fetch('/api/weekly-data');
+                const data = await res.json();
+                if (!data.has_data) { renderEmpty(wrap); return; }
+                renderDashboard(wrap, data);
+            } catch (e) {
+                wrap.innerHTML = `<div class="state-box"><p class="state-body" style="color:#ef4444">Could not load data. Please check the server.</p></div>`;
+            }
+        }
+
+        function renderEmpty(wrap) {
+            wrap.innerHTML = `
+        <div class="state-box">
+            <div class="state-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="${ACCENT}" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+            </div>
+            <p class="state-title">No entries recorded this week</p>
+            <p class="state-body">Start logging daily check-ins and your 7-day summary will appear here.</p>
+        </div>`;
+        }
+
+        function renderDashboard(wrap, data) {
+            const { labels, daily_averages, weekly_avg, pain_days, most_affected, body_part_counts } = data;
+            const areaShort = most_affected.length > 16
+                ? most_affected.replace(/^(Left|Right) /, m => m.trim()[0] + '. ')
+                : most_affected;
+
+            wrap.innerHTML = `
+        <!-- Stat cards -->
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${ACCENT}" stroke-width="2.2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                </div>
+                <span class="stat-num">${weekly_avg}</span>
+                <span class="stat-label">Average Severity · 7 days</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${ACCENT}" stroke-width="2.2">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <span class="stat-num">${pain_days}</span>
+                <span class="stat-label">Days with Entries</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${ACCENT}" stroke-width="2.2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </div>
+                <span class="stat-num text-sm">${areaShort}</span>
+                <span class="stat-label">Most Logged Area</span>
+            </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-card-hdr">
+                    <div>
+                        <p class="chart-card-title">Daily Severity Trend</p>
+                        <p class="chart-card-sub">Average severity per day — last 7 days</p>
+                    </div>
+                    <span class="chart-badge">Y: 0–10</span>
+                </div>
+                <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-card-hdr">
+                    <div>
+                        <p class="chart-card-title">Body Area Frequency</p>
+                        <p class="chart-card-sub">Entries per area this week</p>
+                    </div>
+                </div>
+                <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Bottom row -->
+        <div class="bottom-row">
+            <div class="chart-card">
+                <div class="chart-card-hdr">
+                    <div>
+                        <p class="chart-card-title">Daily Log Count</p>
+                        <p class="chart-card-sub">Number of entries per day</p>
+                    </div>
+                </div>
+                <div class="chart-wrap-md"><canvas id="countChart"></canvas></div>
+            </div>
+            <div class="chart-card" style="display:flex;flex-direction:column;justify-content:center;">
+                <p class="chart-card-title" style="margin-bottom:12px;">Summary</p>
+                <p style="font-size:14px;color:var(--sub);line-height:1.75;">
+                    Over the past 7 days, <strong>${pain_days}</strong> day${pain_days !== 1 ? 's' : ''} with entries were recorded.
+                    The most frequently logged area was <strong>${most_affected}</strong>.
+                    Average observed severity was <strong>${weekly_avg}</strong> / 10.
+                </p>
+                <p style="font-size:11px;color:var(--muted);margin-top:16px;font-style:italic;">
+                    Awareness tool only — not medical advice.
+                </p>
+            </div>
+        </div>
+
+        <p class="page-footer">
+            This page reflects your logged data as-is · Intended for personal awareness — not for clinical diagnosis or medical assessment.
+        </p>`;
+
+            requestAnimationFrame(() => {
+                buildLineChart(labels, daily_averages);
+                buildBarChart(body_part_counts);
+                buildCountChart(labels, data._count_per_day || daily_averages.map(v => v > 0 ? 1 : 0));
+            });
+        }
+
+        function buildLineChart(labels, values) {
+            new Chart(document.getElementById('lineChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Avg Severity', data: values,
+                        borderColor: ACCENT, backgroundColor: ACCENT_FILL,
+                        pointBackgroundColor: ACCENT, pointBorderColor: '#fff',
+                        pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7,
+                        borderWidth: 2.5, fill: true, tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: c => c.parsed.y === 0 ? ' No logs' : ` Severity ${c.parsed.y}` } }
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 12, family: 'Inter' }, color: '#94a3b8' } },
+                        y: { min: 0, max: 10, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { stepSize: 2, font: { size: 12, family: 'Inter' }, color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        function buildBarChart(counts) {
+            const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            const colors = entries.map((_, i) => BAR_COLORS[i % BAR_COLORS.length]);
+            new Chart(document.getElementById('barChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: entries.map(e => e[0]),
+                    datasets: [{
+                        data: entries.map(e => e[1]),
+                        backgroundColor: colors.map(c => c + 'CC'),
+                        borderColor: colors, borderWidth: 1.5, borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.parsed.x} log${c.parsed.x === 1 ? '' : 's'}` } } },
+                    scales: {
+                        x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { stepSize: 1, font: { size: 11, family: 'Inter' }, color: '#94a3b8' } },
+                        y: { grid: { display: false }, ticks: { font: { size: 11, family: 'Inter' }, color: '#6b7280' } }
+                    }
+                }
+            });
+        }
+
+        function buildCountChart(labels, counts) {
+            new Chart(document.getElementById('countChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: counts.map(v => v > 0 ? 'rgba(59,130,246,0.22)' : 'rgba(200,210,230,0.25)'),
+                        borderColor: counts.map(v => v > 0 ? ACCENT : '#e2e8f0'),
+                        borderWidth: 1.5, borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.parsed.y} log${c.parsed.y === 1 ? '' : 's'}` } } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { size: 12, family: 'Inter' }, color: '#94a3b8' } },
+                        y: { min: 0, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { stepSize: 1, font: { size: 12, family: 'Inter' }, color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        loadWeeklyData();
+    </script>
+</body>
+
+</html>

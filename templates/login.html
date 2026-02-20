@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdgeCare — Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0a0e1a;
+            --navy-mid: #0f1629;
+            --navy-soft: #161d35;
+            --accent: #3b82f6;
+            --accent-h: #2563eb;
+            --accent-lt: #dbeafe;
+            --gold: #f59e0b;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-lt: rgba(255, 255, 255, 0.55);
+            --radius: 14px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #f0f4ff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── LEFT PANEL ──────────────────────────────────── */
+        .left-panel {
+            flex: 0 0 52%;
+            background: linear-gradient(145deg, #0a0e1a 0%, #0d1530 40%, #0f1e4a 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 48px 56px;
+            overflow: hidden;
+        }
+
+        /* Decorative grid */
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        /* Glowing orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(59, 130, 246, 0.18);
+            top: -100px;
+            right: -100px;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(99, 102, 241, 0.12);
+            bottom: 80px;
+            left: -80px;
+        }
+
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: rgba(245, 158, 11, 0.08);
+            top: 50%;
+            left: 40%;
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Brand */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 80px;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-tier {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gold);
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            padding: 2px 8px;
+            border-radius: 99px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Hero text */
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            padding: 6px 14px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #93c5fd;
+            letter-spacing: 0.4px;
+            margin-bottom: 28px;
+        }
+
+        .hero-tag-dot {
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        .hero-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title span {
+            color: #3b82f6;
+        }
+
+        .hero-sub {
+            font-size: 16px;
+            color: var(--text-lt);
+            line-height: 1.65;
+            max-width: 380px;
+        }
+
+        /* Feature pills */
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 48px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        /* Bottom stats bar */
+        .left-footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .stat-item {
+            flex: 1;
+            padding: 18px 20px;
+            border-right: 1px solid var(--border);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-num {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-lbl {
+            font-size: 11px;
+            color: var(--text-lt);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        /* ── RIGHT PANEL ─────────────────────────────────── */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 64px;
+            background: #ffffff;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-eyebrow {
+            font-size: 12px;
+            font-weight: 700;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .login-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.8px;
+            margin-bottom: 6px;
+        }
+
+        .login-sub {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 36px;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin-bottom: 32px;
+        }
+
+        /* Error */
+        .error-banner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            animation: shake 0.35s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            20% {
+                transform: translateX(-6px)
+            }
+
+            40% {
+                transform: translateX(6px)
+            }
+
+            60% {
+                transform: translateX(-4px)
+            }
+
+            80% {
+                transform: translateX(4px)
+            }
+        }
+
+        /* Fields */
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            color: #0f172a;
+            background: #f8fafc;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .field input:focus {
+            border-color: #3b82f6;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .field input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Submit */
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+            letter-spacing: 0.2px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.45);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Credentials hint */
+        .creds-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 18px;
+        }
+
+        .creds-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        .cred-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .cred-row+.cred-row {
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .cred-val {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            font-family: 'Courier New', monospace;
+        }
+
+        .role-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 99px;
+            letter-spacing: 0.3px;
+        }
+
+        .pill-coach {
+            background: #ede9fe;
+            color: #4c1d95;
+        }
+
+        .pill-player {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Footer */
+        .login-footer {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* Entrance animation */
+        .login-box {
+            animation: slide-up 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── LEFT PANEL ─────────────────────────────────────── -->
+    <div class="left-panel">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+
+        <div class="left-content">
+            <!-- Brand -->
+            <div class="brand">
+                <div class="brand-mark">
+                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                        <path d="M16 4 L20 11 L28 12 L22 18 L23 26 L16 22 L9 26 L10 18 L4 12 L12 11 Z" fill="white"
+                            opacity="0.92" />
+                    </svg>
+                </div>
+                <span class="brand-name">EdgeCare</span>
+                <span class="brand-tier">Pro</span>
+            </div>
+
+            <div class="hero-tag">
+                <span class="hero-tag-dot"></span>
+                Athlete Health Intelligence Platform
+            </div>
+
+            <h1 class="hero-title">
+                Performance<br>insights that<br><span>matter.</span>
+            </h1>
+            <p class="hero-sub">
+                A professional-grade platform for sports organizations to monitor athlete wellness, track trends, and
+                make informed decisions — securely and in real time.
+            </p>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <span class="feature-text">Real-time weekly analytics per player</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <span class="feature-text">Role-based access control &amp; secure sessions</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <span class="feature-text">Coach &amp; player portals, strictly separated</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="left-footer">
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-num">99.9%</div>
+                    <div class="stat-lbl">Uptime SLA</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">RBAC</div>
+                    <div class="stat-lbl">Access Control</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">AES</div>
+                    <div class="stat-lbl">Session Encryption</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── RIGHT PANEL ────────────────────────────────────── -->
+    <div class="right-panel">
+        <div class="login-box">
+            <p class="login-eyebrow">Secure Portal Access</p>
+            <h1 class="login-heading">Welcome back</h1>
+            <p class="login-sub">Sign in with your organization credentials to continue.</p>
+
+            <div class="divider"></div>
+
+            {% if error %}
+            <div class="error-banner">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/login" autocomplete="on">
+                <div class="field">
+                    <label for="username">Username</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </span>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required
+                            autofocus>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                        </span>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <button type="submit" class="login-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                        <polyline points="10 17 15 12 10 7" />
+                        <line x1="15" y1="12" x2="3" y2="12" />
+                    </svg>
+                    Sign In to EdgeCare
+                </button>
+            </form>
+
+            <div class="creds-box">
+                <p class="creds-title">Demo Credentials</p>
+                <div class="cred-row">
+                    <span class="cred-val">coach1 / coachpass</span>
+                    <span class="role-pill pill-coach">Coach</span>
+                </div>
+                <div class="cred-row">
+                    <span class="cred-val">player1 / playerpass</span>
+                    <span class="role-pill pill-player">Player</span>
+                </div>
+            </div>
+
+            <p class="login-footer">© 2025 EdgeCare. All rights reserved. · Enterprise Edition</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
